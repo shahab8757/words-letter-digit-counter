@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0">
+	<title>Word, Letter and Digit Counter</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 h-screen flex 
+			justify-center items-center">
+	<div class="max-w-lg w-full bg-white p-8 rounded-lg
+				shadow-lg border-2 border-green-500">
+		<h1 class="text-2xl font-semibold mb-4">
+			Word, Letter, and Digit Counter
+		</h1>
+		<textarea id="text-input"
+				class="w-full h-40 px-4 py-2 mb-4 border 
+						border-gray-300 rounded-md resize-none
+						focus:outline-none focus:border-blue-500"
+				placeholder="Enter text here...">
+		</textarea>
+		<div class="flex justify-between">
+			<div>
+				<p class="text-sm text-gray-500 mb-1">
+					Word Count
+				</p>
+				<p id="word-count" class="text-lg font-semibold">0</p>
+			</div>
+			<div>
+				<p class="text-sm text-gray-500 mb-1">Letter Count</p>
+				<p id="letter-count" class="text-lg font-semibold">0</p>
+			</div>
+			<div>
+				<p class="text-sm text-gray-500 mb-1">Digit Count</p>
+				<p id="digit-count" class="text-lg font-semibold">0</p>
+			</div>
+		</div>
+		<button id="clear-button"
+				class="mt-4 px-4 py-2 bg-red-500 
+					text-white rounded-md 
+					hover:bg-red-600 
+					focus:outline-none">
+			Clear
+		</button>
+		<button id="copy-button"
+				class="mt-4 px-4 py-2 bg-blue-500 text-white
+					rounded-md hover:bg-blue-600 
+					focus:outline-none">
+			Copy Text
+		</button>
+		<a id="download-link"
+		class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md
+				hover:bg-green-600 focus:outline-none"
+		download="text.txt">
+			Download as File
+		</a>
+	</div>
+	<script>
+		function updateCounts() {
+			const text = document.getElementById('text-input')
+								.value;
+			const wordCount = text.trim() === '' ? 0 : text.trim()
+								.split(/\s+/).length;
+			const letterCount = text.replace(/[^a-zA-Z]/g, '').length;
+			const digitCount = text.replace(/\D/g, '').length;
+			document.getElementById('word-count')
+					.textContent = wordCount;
+			document.getElementById('letter-count')
+					.textContent = letterCount;
+			document.getElementById('digit-count')
+					.textContent = digitCount;
+		}
+		function clearText() {
+			document.getElementById('text-input').value = '';
+			updateCounts();
+		}
+		function copyText() {
+			const textArea = document.getElementById('text-input');
+			textArea.select();
+			document.execCommand('copy');
+		}
+		function downloadText() {
+			const text = document.getElementById('text-input').value;
+			const blob = new Blob(, { type: 'text/plain' });
+			const url = URL.createObjectURL(blob);
+			const downloadLink = document.getElementById('download-link');
+			downloadLink.href = url;
+		}
+		document.getElementById('text-input')
+				.addEventListener('input', updateCounts);
+		document.getElementById('clear-button')
+				.addEventListener('click', clearText);
+		document.getElementById('copy-button')
+				.addEventListener('click', copyText);
+		document.getElementById('download-link')
+				.addEventListener('click', downloadText);
+		updateCounts();
+	</script>
+</body>
+
+</html>
